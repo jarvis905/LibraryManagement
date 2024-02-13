@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "x2YJpFvLAtdiT8pHgw5x7c8L3Bi0x4x/MwtwBBP7eoVCQgdm192Zbmnt0jytIbaHmrATv4ORoblA1lFb6JhemA==",
+  "success": true,
+  "projectFilePath": "D:\\AdvAplDev\\LibraryManagement\\CodeL3\\CodeL3.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\viral\\.nuget\\packages\\stub.system.data.sqlite.core.netstandard\\1.0.118\\stub.system.data.sqlite.core.netstandard.1.0.118.nupkg.sha512",
+    "C:\\Users\\viral\\.nuget\\packages\\system.data.sqlite.core\\1.0.118\\system.data.sqlite.core.1.0.118.nupkg.sha512"
+  ],
+  "logs": []
+}
