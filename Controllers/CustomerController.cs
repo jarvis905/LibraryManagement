@@ -1,28 +1,37 @@
 // CustomerController.cs
+using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using LibraryManagement.Models;
-using LibraryManagement.ViewModels;
+using LibraryManagement.Data;
 
 namespace LibraryManagement.Controllers
 {
     public class CustomerController : Controller
     {
-        public IActionResult Details(int id)
-        {
-            // Simulated data access
-            Customer customer = new Customer
-            {
-                CustomerId = 69,
-                Name = "Karen White"
-            };
+        private readonly ApplicationDbContext _dbContext;
 
-            CustomerViewModel viewModel = new CustomerViewModel
-            {
-                CustomerId = customer.CustomerId,
-                Name = customer.Name
-            };
-            
-            return View(viewModel);
+        public CustomerController(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+        public IActionResult Details()
+        {
+            var customers = _dbContext.Customers.ToList();
+            return View(customers);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Customer customer)
+        {
+            _dbContext.Customers.Add(customer);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Details");
         }
     }
 }

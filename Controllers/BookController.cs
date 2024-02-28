@@ -1,44 +1,37 @@
 // BookController.cs
+using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using LibraryManagement.Models;
-using LibraryManagement.ViewModels;
+using LibraryManagement.Data;
 
 namespace LibraryManagement.Controllers
 {
     public class BookController : Controller
     {
-        public IActionResult Details(int id)
+        private readonly ApplicationDbContext _dbContext;
+
+        public BookController(ApplicationDbContext dbContext)
         {
-            // Simulated data access
-            Book book = new Book
-            {
-                BookId = id,
-                Title = "Sample Book",
-                AuthorId = 1,
-                LibraryBranchId = 1
-            };
+            _dbContext = dbContext;
+        }
+        public IActionResult Details()
+        {
+            var books = _dbContext.Books.ToList();
+            return View(books);
+        }
 
-            Author author = new Author
-            {
-                AuthorId = 1,
-                Name = "John Doe"
-            };
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-            LibraryBranch branch = new LibraryBranch
-            {
-                LibraryBranchId = 1,
-                BranchName = "Main Branch"
-            };
-
-            BookViewModel viewModel = new BookViewModel
-            {
-                BookId = book.BookId,
-                Title = book.Title,
-                AuthorName = author.Name,
-                BranchName = branch.BranchName
-            };
-            
-            return View(viewModel);
+        [HttpPost]
+        public IActionResult Create(Book book)
+        {
+            _dbContext.Books.Add(book);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Details");
         }
     }
 }

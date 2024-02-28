@@ -1,29 +1,37 @@
 // LibraryBranchController.cs
+using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using LibraryManagement.Models;
-using LibraryManagement.ViewModels;
+using LibraryManagement.Data;
 
 namespace LibraryManagement.Controllers
 {
     public class LibraryBranchController : Controller
     {
-        public IActionResult Details(int id)
+        private readonly ApplicationDbContext _dbContext;
+
+        public LibraryBranchController(ApplicationDbContext dbContext)
         {
-            // Simulated data access
+            _dbContext = dbContext;
+        }
+        public IActionResult Details()
+        {
+            var libraryBranch = _dbContext.LibraryBranches.ToList();
+            return View(libraryBranch);
+        }
 
-            LibraryBranch branch = new LibraryBranch
-            {
-                LibraryBranchId = 1,
-                BranchName = "Main Branch"
-            };
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-            LibraryBranchViewModel viewModel = new LibraryBranchViewModel
-            {
-                LibraryBranchId = branch.LibraryBranchId,
-                BranchName = branch.BranchName
-            };
-            
-            return View(viewModel);
+        [HttpPost]
+        public IActionResult Create(LibraryBranch libraryBranch)
+        {
+            _dbContext.LibraryBranches.Add(libraryBranch);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Details");
         }
     }
 }

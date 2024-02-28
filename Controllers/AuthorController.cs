@@ -1,29 +1,37 @@
 // AuthorController.cs
+using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using LibraryManagement.Models;
-using LibraryManagement.ViewModels;
+using LibraryManagement.Data;
 
 namespace LibraryManagement.Controllers
 {
     public class AuthorController : Controller
     {
-        public IActionResult Details(int id)
-        {
-            // Simulated data access
-            
-            Author author = new Author
-            {
-                AuthorId = 1,
-                Name = "John Doe"
-            };
+        private readonly ApplicationDbContext _dbContext;
 
-            AuthorViewModel viewModel = new AuthorViewModel
-            {
-                AuthorId = author.AuthorId,
-                Name = author.Name
-            };
-            
-            return View(viewModel);
+        public AuthorController(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+        public IActionResult Details()
+        {
+            var authors = _dbContext.Authors.ToList();
+            return View(authors);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Author author)
+        {
+            _dbContext.Authors.Add(author);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Details");
         }
     }
 }

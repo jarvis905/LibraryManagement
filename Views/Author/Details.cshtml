@@ -1,6 +1,23 @@
-@model LibraryManagement.ViewModels.AuthorViewModel
+@model List<LibraryManagement.Models.Author>
 <!-- Details.cshtml in LibraryManagement/Views/Author folder-->
 
-<h1>Sample Author</h1>
-<p>AuthorId: @Model.AuthorId</p>
-<p>Author Name: @Model.Name</p>
+<h2>Authors</h2>
+<a href="@Url.Action("Create", "Author")" class="btn btn-primary" style="margin: 10px;">Create Author</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>AuthorId</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var author in Model)
+        {
+            <tr>
+                <td>@author.AuthorId</td>
+                <td>@author.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
